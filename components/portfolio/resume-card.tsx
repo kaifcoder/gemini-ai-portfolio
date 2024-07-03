@@ -24,10 +24,10 @@ export default function DownloadResumeCard({
     <Card className="w-full max-w-md p-6 grid gap-6">
       <div className="space-y-2">
         <CardTitle className="text-xl font-semibold">
-          Download My Resume
+          View or Download My Resume
         </CardTitle>
         <CardDescription className="text-muted-foreground">
-          Get a copy of my up-to-date resume in PDF format.
+          Get a copy of my up-to-date resume on Google Docs.
         </CardDescription>
       </div>
       <div className="flex items-center justify-between">
@@ -39,7 +39,7 @@ export default function DownloadResumeCard({
           Download
         </Button>
         <div className="text-xs text-muted-foreground">
-          Last updated: 2023-06-15
+          Last updated: {new Date().toLocaleDateString()}
         </div>
       </div>
     </Card>

@@ -37,6 +37,9 @@ import { ListHotels } from '@/components/hotels/list-hotels'
 import { Destinations } from '@/components/flights/destinations'
 import { Video } from '@/components/media/video'
 import DownloadResumeCard from '@/components/portfolio/resume-card'
+import { PortfolioCard } from '@/components/component/portfolio-card'
+import LinkedinFrame from '@/components/component/linkedin-frame'
+import { ContactInfo } from '@/components/component/contact-info'
 
 const genAI = new GoogleGenerativeAI(
   process.env.GOOGLE_GENERATIVE_AI_API_KEY || ''
@@ -179,7 +182,25 @@ async function submitUserMessage(content: string) {
                 )
             })
           },
-
+          showPortfolio: {
+            description:
+              'Show the UI for portfolio of user name which is Mohd Kaif.',
+            parameters: z.object({
+              user: z.string().describe('user name').optional()
+            })
+          },
+          showContactInfo: {
+            description: 'Show the contact information of the user.',
+            parameters: z.object({
+              user: z.string().describe('user name').optional()
+            })
+          },
+          showLinkedIn: {
+            description: 'Show the LinkedIn profile of the user.',
+            parameters: z.object({
+              user: z.string().describe('user name').optional()
+            })
+          },
           showSeatPicker: {
             description:
               'Show the UI to choose or change seat for the selected flight.',
@@ -241,7 +262,7 @@ You are a personal assistant to Mohd Kaif, helping to keep track of projects, ex
           })
         } else if (type === 'tool-call') {
           const { toolName, args } = delta
-
+          console.log(toolName, args)
           if (toolName === 'listDestinations') {
             const { destinations } = args
 
@@ -269,7 +290,7 @@ You are a personal assistant to Mohd Kaif, helping to keep track of projects, ex
                 }
               ]
             })
-          } else if (toolName === 'showFlights') {
+          } else if (toolName === 'showPortfolio') {
             aiState.done({
               ...aiState.get(),
               interactions: [],
@@ -278,12 +299,11 @@ You are a personal assistant to Mohd Kaif, helping to keep track of projects, ex
                 {
                   id: nanoid(),
                   role: 'assistant',
-                  content:
-                    "Here's a list of flights for you. Choose one and we can proceed to pick a seat.",
+                  content: 'Here is the portfolio of Mohd Kaif.',
                   display: {
-                    name: 'showFlights',
+                    name: 'showPortfolio',
                     props: {
-                      summary: args
+                      user: args
                     }
                   }
                 }
@@ -292,10 +312,10 @@ You are a personal assistant to Mohd Kaif, helping to keep track of projects, ex
 
             uiStream.update(
               <BotCard>
-                <ListFlights summary={args} />
+                <PortfolioCard />
               </BotCard>
             )
-          } else if (toolName === 'showSeatPicker') {
+          } else if (toolName === 'showLinkedIn') {
             aiState.done({
               ...aiState.get(),
               interactions: [],
@@ -304,12 +324,11 @@ You are a personal assistant to Mohd Kaif, helping to keep track of projects, ex
                 {
                   id: nanoid(),
                   role: 'assistant',
-                  content:
-                    "Here's a list of available seats for you to choose from. Select one to proceed to payment.",
+                  content: 'Here is the linkedin of Mohd Kaif.',
                   display: {
-                    name: 'showSeatPicker',
+                    name: 'showLinkedIn',
                     props: {
-                      summary: args
+                      user: args
                     }
                   }
                 }
@@ -318,7 +337,32 @@ You are a personal assistant to Mohd Kaif, helping to keep track of projects, ex
 
             uiStream.update(
               <BotCard>
-                <SelectSeats summary={args} />
+                <LinkedinFrame />
+              </BotCard>
+            )
+          } else if (toolName === 'showContactInfo') {
+            aiState.done({
+              ...aiState.get(),
+              interactions: [],
+              messages: [
+                ...aiState.get().messages,
+                {
+                  id: nanoid(),
+                  role: 'assistant',
+                  content: 'Here is the Contact info of Mohd Kaif.',
+                  display: {
+                    name: 'showContactInfo',
+                    props: {
+                      user: args
+                    }
+                  }
+                }
+              ]
+            })
+
+            uiStream.update(
+              <BotCard>
+                <ContactInfo />
               </BotCard>
             )
           } else if (toolName === 'showResumeDownloadCard') {
@@ -460,21 +504,17 @@ export const getUIStateFromAIState = (aiState: Chat) => {
             <BotCard>
               <ListFlights summary={message.display.props.summary} />
             </BotCard>
-          ) : message.display?.name === 'showSeatPicker' ? (
+          ) : message.display?.name === 'showContactInfo' ? (
             <BotCard>
               <SelectSeats summary={message.display.props.summary} />
             </BotCard>
-          ) : message.display?.name === 'showHotels' ? (
+          ) : message.display?.name === 'showLinkedIn' ? (
             <BotCard>
-              <ListHotels />
+              <LinkedinFrame />
             </BotCard>
-          ) : message.content === 'The purchase has completed successfully.' ? (
+          ) : message.display?.name === 'showPortfolio' ? (
             <BotCard>
-              <PurchaseTickets status="expired" />
-            </BotCard>
-          ) : message.display?.name === 'showBoardingPass' ? (
-            <BotCard>
-              <BoardingPass summary={message.display.props.summary} />
+              <PortfolioCard />
             </BotCard>
           ) : message.display?.name === 'showResumeDownloadCard' ? (
             <BotCard>

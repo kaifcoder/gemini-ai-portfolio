@@ -40,7 +40,7 @@ export function ChatPanel({
     {
       heading: 'Know more about me',
       subheading: 'Get my projects, and more',
-      message: 'Tell me about Mohd Kaif and his work!'
+      message: 'Show me the profile of Mohd Kaif'
     },
     {
       heading: 'My Projects',

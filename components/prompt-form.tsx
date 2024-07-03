@@ -8,7 +8,7 @@ import { useActions, useUIState } from 'ai/rsc'
 import { UserMessage } from './stocks/message'
 import { type AI } from '@/lib/chat/actions'
 import { Button } from '@/components/ui/button'
-import { IconArrowElbow, IconPlus } from '@/components/ui/icons'
+import { IconArrowElbow } from '@/components/ui/icons'
 import {
   Tooltip,
   TooltipContent,
@@ -17,6 +17,7 @@ import {
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
 import { nanoid } from 'nanoid'
 import { toast } from 'sonner'
+import { PlaceholdersAndVanishInput } from './ui/placeholders-and-vanish-input'
 
 export function PromptForm({
   input,
@@ -37,7 +38,13 @@ export function PromptForm({
   }, [])
 
   const fileRef = React.useRef<HTMLInputElement>(null)
-
+  const placeholders = [
+    "What's the first rule of Fight Club?",
+    'Who is Tyler Durden?',
+    'Where is Andrew Laeddis Hiding?',
+    'Write a Javascript method to reverse a string',
+    'How to assemble your own PC?'
+  ]
   return (
     <form
       ref={formRef}
@@ -84,57 +91,7 @@ export function PromptForm({
         }
       }}
     >
-      <input
-        type="file"
-        className="hidden"
-        id="file"
-        ref={fileRef}
-        onChange={async event => {
-          if (!event.target.files) {
-            toast.error('No file selected')
-            return
-          }
-
-          const file = event.target.files[0]
-
-          if (file.type.startsWith('video/')) {
-            const responseMessage = await describeImage('')
-            setMessages(currentMessages => [
-              ...currentMessages,
-              responseMessage
-            ])
-          } else {
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-
-            reader.onloadend = async () => {
-              const base64String = reader.result
-              const responseMessage = await describeImage(base64String)
-              setMessages(currentMessages => [
-                ...currentMessages,
-                responseMessage
-              ])
-            }
-          }
-        }}
-      />
       <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-zinc-100 px-12 sm:rounded-full sm:px-12">
-        {/* <Tooltip>
-          <TooltipTrigger asChild> */}
-        <Button
-          variant="outline"
-          size="icon"
-          className="absolute left-4 top-[14px] size-8 rounded-full bg-background p-0 sm:left-4"
-          onClick={() => {
-            fileRef.current?.click()
-          }}
-        >
-          <IconPlus />
-          <span className="sr-only">New Chat</span>
-        </Button>
-        {/* </TooltipTrigger>
-          <TooltipContent>Add Attachments</TooltipContent>
-        </Tooltip> */}
         <Textarea
           ref={inputRef}
           tabIndex={0}
@@ -167,6 +124,14 @@ export function PromptForm({
           </Tooltip>
         </div>
       </div>
+      {/* <PlaceholdersAndVanishInput
+        placeholders={placeholders}
+        onChange={e => setInput(e.target.value)}
+        onSubmit={async (e: any) => {
+          e.preventDefault()
+          formRef.current?.requestSubmit()
+        }}
+      /> */}
     </form>
   )
 }

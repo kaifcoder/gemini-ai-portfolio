@@ -1,4 +1,5 @@
 import { ExternalLink } from '@/components/external-link'
+import { LinkPreview } from './ui/link-preview'
 
 export function EmptyScreen() {
   return (
@@ -12,8 +13,26 @@ export function EmptyScreen() {
           {/* describe this portfolio to users */}
           This is a unique Portfolio of Mohd Kaif In which user can interact
           with the AI chatbot and can see the projects and blogs. This is Made
-          with Google Gemini, Next.js and Vercel AI SDK. Login to save your
-          chats and share with others. Enjoy! 🚀
+          with{' '}
+          <LinkPreview
+            url="https://ui.aceternity.com"
+            className="font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-500 to-pink-500"
+          >
+            Aceternity UI
+          </LinkPreview>
+          ,{' '}
+          <LinkPreview
+            url="https://ai.google.dev/"
+            className="font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-500 to-violet-500"
+          >
+            Google gemini
+          </LinkPreview>
+          ,{' '}
+          <LinkPreview url="https://www.vercel.com/next" className="font-bold">
+            Next.JS
+          </LinkPreview>{' '}
+          and Vercel AI SDK. Login to save your chats and share with others.
+          Enjoy! 🚀
         </p>
       </div>
     </div>
