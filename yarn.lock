@@ -879,14 +879,7 @@
   dependencies:
     "@upstash/core-analytics" "^0.0.9"
 
-"@upstash/redis@1.25.1":
-  version "1.25.1"
-  resolved "https://registry.yarnpkg.com/@upstash/redis/-/redis-1.25.1.tgz#361656a326b40d5816640ae4335a8b1bbbb0d238"
-  integrity sha512-ACj0GhJ4qrQyBshwFgPod6XufVEfKX2wcaihsEvSdLYnY+m+pa13kGt1RXm/yTHKf4TQi/Dy2A8z/y6WUEOmlg==
-  dependencies:
-    crypto-js "^4.2.0"
-
-"@upstash/redis@^1.28.3":
+"@upstash/redis@^1.28.3", "@upstash/redis@^1.31.3":
   version "1.31.6"
   resolved "https://registry.yarnpkg.com/@upstash/redis/-/redis-1.31.6.tgz#54146617df3d07dfb51c858d3dd0aa23a06727fa"
   integrity sha512-7sDQQqvVnnV+2PUVGjocITa34CULGLoWhmfSY/LtpxNYv24EsgOk9VXhmGXIyzJBcXxB614wOF6ccEN0Lr7fqQ==
@@ -900,12 +893,12 @@
   dependencies:
     server-only "^0.0.1"
 
-"@vercel/kv@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@vercel/kv/-/kv-1.0.1.tgz#2311e9d62eaed360eba99603c20eeb77a10a0749"
-  integrity sha512-uTKddsqVYS2GRAM/QMNNXCTuw9N742mLoGRXoNDcyECaxEXvIHG0dEY+ZnYISV4Vz534VwJO+64fd9XeSggSKw==
+"@vercel/kv@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@vercel/kv/-/kv-2.0.0.tgz#a0baa12563946cb35cee23d638b68f0fbbf76172"
+  integrity sha512-zdVrhbzZBYo5d1Hfn4bKtqCeKf0FuzW8rSHauzQVMUgv1+1JOwof2mWcBuI+YMJy8s0G0oqAUfQ7HgUDzb8EbA==
   dependencies:
-    "@upstash/redis" "1.25.1"
+    "@upstash/redis" "^1.31.3"
 
 "@vercel/og@^0.6.2":
   version "0.6.2"
