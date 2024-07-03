@@ -12,11 +12,14 @@ import {
   createStreamableValue
 } from 'ai/rsc'
 
-import { BotCard, BotMessage } from '@/components/stocks'
-
 import { nanoid, sleep } from '@/lib/utils'
 import { saveChat } from '@/app/actions'
-import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
+import {
+  BotCard,
+  BotMessage,
+  SpinnerMessage,
+  UserMessage
+} from '@/components/stocks/message'
 import { Chat } from '../types'
 import { auth } from '@/auth'
 import { FlightStatus } from '@/components/flights/flight-status'
@@ -33,6 +36,7 @@ import { z } from 'zod'
 import { ListHotels } from '@/components/hotels/list-hotels'
 import { Destinations } from '@/components/flights/destinations'
 import { Video } from '@/components/media/video'
+import DownloadResumeCard from '@/components/portfolio/resume-card'
 
 const genAI = new GoogleGenerativeAI(
   process.env.GOOGLE_GENERATIVE_AI_API_KEY || ''
@@ -157,7 +161,7 @@ async function submitUserMessage(content: string) {
   ;(async () => {
     try {
       const result = await streamText({
-        model: google('models/gemini-1.5-flash'),
+        model: google('models/gemini-1.5-pro'),
         temperature: 0,
         tools: {
           showFlights: {
@@ -175,18 +179,7 @@ async function submitUserMessage(content: string) {
                 )
             })
           },
-          listDestinations: {
-            description: 'List destinations to travel cities, max 5.',
-            parameters: z.object({
-              destinations: z.array(
-                z
-                  .string()
-                  .describe(
-                    'List of destination cities. Include rome as one of the cities.'
-                  )
-              )
-            })
-          },
+
           showSeatPicker: {
             description:
               'Show the UI to choose or change seat for the selected flight.',
@@ -197,64 +190,28 @@ async function submitUserMessage(content: string) {
               date: z.string()
             })
           },
-          showHotels: {
-            description: 'Show the UI to choose a hotel for the trip.',
-            parameters: z.object({ city: z.string() })
-          },
-          checkoutBooking: {
-            description:
-              'Show the UI to purchase/checkout a flight and hotel booking.',
-            parameters: z.object({ shouldConfirm: z.boolean() })
-          },
-          showBoardingPass: {
-            description: "Show user's imaginary boarding pass.",
+          showResumeDownloadCard: {
+            description: 'Show the UI to download the resume.',
             parameters: z.object({
-              airline: z.string(),
-              arrival: z.string(),
-              departure: z.string(),
-              departureTime: z.string(),
-              arrivalTime: z.string(),
-              price: z.number(),
-              seat: z.string(),
-              date: z
-                .string()
-                .describe('Date of the flight, example format: 6 April, 1998'),
-              gate: z.string()
-            })
-          },
-          showFlightStatus: {
-            description:
-              'Get the current status of imaginary flight by flight number and date.',
-            parameters: z.object({
-              flightCode: z.string(),
-              date: z.string(),
-              departingCity: z.string(),
-              departingAirport: z.string(),
-              departingAirportCode: z.string(),
-              departingTime: z.string(),
-              arrivalCity: z.string(),
-              arrivalAirport: z.string(),
-              arrivalAirportCode: z.string(),
-              arrivalTime: z.string()
+              user: z.string().describe('user name')
             })
           }
+
+          // showResumeDownloadCard: {
+          //   description: 'Show a card to download the resume.'
+          // }
         },
         system: `\
-      You are a friendly assistant that helps the user with booking flights to destinations that are based on a list of books. You can you give travel recommendations based on the books, and will continue to help the user book a flight to their destination.
-  
-      The date today is ${format(new Date(), 'd LLLL, yyyy')}. 
-      The user's current location is San Francisco, CA, so the departure city will be San Francisco and airport will be San Francisco International Airport (SFO). The user would like to book the flight out on May 12, 2024.
+You are a personal assistant to Mohd Kaif, helping to keep track of projects, experience, education, hobbies, and contact information. You act like a live resume that users can interact with. users can be of any country and can ask questions in any language. 
+        Here are the key details and flows to manage:
+          1. Projects: List current and past projects, including descriptions, roles, and status updates.
+          2. Experience: List work experience, including job titles, companies, and dates.
+          3. Education: List educational background, including degrees, institutions, and dates.
+          4. Hobbies: List hobbies and interests, including descriptions and activities.
+          5. Contact: Provide contact information, including email, phone number, and social media links.
+          6. Chat: Provide a chat interface for users to ask questions and receive responses.
 
-      List United Airlines flights only.
-      
-      Here's the flow: 
-        1. List holiday destinations based on a collection of books.
-        2. List flights to destination.
-        3. Choose a flight.
-        4. Choose a seat.
-        5. Choose hotel
-        6. Purchase booking.
-        7. Show boarding pass.
+          Be sure to handle user queries with care and provide accurate information.
       `,
         messages: [...history]
       })
@@ -364,7 +321,7 @@ async function submitUserMessage(content: string) {
                 <SelectSeats summary={args} />
               </BotCard>
             )
-          } else if (toolName === 'showHotels') {
+          } else if (toolName === 'showResumeDownloadCard') {
             aiState.done({
               ...aiState.get(),
               interactions: [],
@@ -373,45 +330,9 @@ async function submitUserMessage(content: string) {
                 {
                   id: nanoid(),
                   role: 'assistant',
-                  content:
-                    "Here's a list of hotels for you to choose from. Select one to proceed to payment.",
+                  content: 'Here is a link to download the resume.',
                   display: {
-                    name: 'showHotels',
-                    props: {}
-                  }
-                }
-              ]
-            })
-
-            uiStream.update(
-              <BotCard>
-                <ListHotels />
-              </BotCard>
-            )
-          } else if (toolName === 'checkoutBooking') {
-            aiState.done({
-              ...aiState.get(),
-              interactions: []
-            })
-
-            uiStream.update(
-              <BotCard>
-                <PurchaseTickets />
-              </BotCard>
-            )
-          } else if (toolName === 'showBoardingPass') {
-            aiState.done({
-              ...aiState.get(),
-              interactions: [],
-              messages: [
-                ...aiState.get().messages,
-                {
-                  id: nanoid(),
-                  role: 'assistant',
-                  content:
-                    "Here's your boarding pass. Please have it ready for your flight.",
-                  display: {
-                    name: 'showBoardingPass',
+                    name: 'showResumeDownloadCard',
                     props: {
                       summary: args
                     }
@@ -419,37 +340,9 @@ async function submitUserMessage(content: string) {
                 }
               ]
             })
-
             uiStream.update(
               <BotCard>
-                <BoardingPass summary={args} />
-              </BotCard>
-            )
-          } else if (toolName === 'showFlightStatus') {
-            aiState.update({
-              ...aiState.get(),
-              interactions: [],
-              messages: [
-                ...aiState.get().messages,
-                {
-                  id: nanoid(),
-                  role: 'assistant',
-                  content: `The flight status of ${args.flightCode} is as follows:
-                Departing: ${args.departingCity} at ${args.departingTime} from ${args.departingAirport} (${args.departingAirportCode})
-                `
-                }
-              ],
-              display: {
-                name: 'showFlights',
-                props: {
-                  summary: args
-                }
-              }
-            })
-
-            uiStream.update(
-              <BotCard>
-                <FlightStatus summary={args} />
+                <DownloadResumeCard />
               </BotCard>
             )
           }
@@ -460,8 +353,7 @@ async function submitUserMessage(content: string) {
       textStream.done()
       messageStream.done()
     } catch (e) {
-      console.error(e)
-
+      console.log(e)
       const error = new Error(
         'The AI got rate limited, please try again later.'
       )
@@ -477,91 +369,6 @@ async function submitUserMessage(content: string) {
     attachments: uiStream.value,
     spinner: spinnerStream.value,
     display: messageStream.value
-  }
-}
-
-export async function requestCode() {
-  'use server'
-
-  const aiState = getMutableAIState()
-
-  aiState.done({
-    ...aiState.get(),
-    messages: [
-      ...aiState.get().messages,
-      {
-        role: 'assistant',
-        content:
-          "A code has been sent to user's phone. They should enter it in the user interface to continue."
-      }
-    ]
-  })
-
-  const ui = createStreamableUI(
-    <div className="animate-spin">
-      <SpinnerIcon />
-    </div>
-  )
-
-  ;(async () => {
-    await sleep(2000)
-    ui.done()
-  })()
-
-  return {
-    status: 'requires_code',
-    display: ui.value
-  }
-}
-
-export async function validateCode() {
-  'use server'
-
-  const aiState = getMutableAIState()
-
-  const status = createStreamableValue('in_progress')
-  const ui = createStreamableUI(
-    <div className="flex flex-col items-center justify-center gap-3 p-6 text-zinc-500">
-      <div className="animate-spin">
-        <SpinnerIcon />
-      </div>
-      <div className="text-sm text-zinc-500">
-        Please wait while we fulfill your order.
-      </div>
-    </div>
-  )
-
-  ;(async () => {
-    await sleep(2000)
-
-    ui.done(
-      <div className="flex flex-col items-center text-center justify-center gap-3 p-4 text-emerald-700">
-        <CheckIcon />
-        <div>Payment Succeeded</div>
-        <div className="text-sm text-zinc-600">
-          Thanks for your purchase! You will receive an email confirmation
-          shortly.
-        </div>
-      </div>
-    )
-
-    aiState.done({
-      ...aiState.get(),
-      messages: [
-        ...aiState.get().messages.slice(0, -1),
-        {
-          role: 'assistant',
-          content: 'The purchase has completed successfully.'
-        }
-      ]
-    })
-
-    status.done('completed')
-  })()
-
-  return {
-    status: status.value,
-    display: ui.value
   }
 }
 
@@ -592,8 +399,7 @@ export type UIState = {
 export const AI = createAI<AIState, UIState>({
   actions: {
     submitUserMessage,
-    requestCode,
-    validateCode,
+
     describeImage
   },
   initialUIState: [],
@@ -670,9 +476,13 @@ export const getUIStateFromAIState = (aiState: Chat) => {
             <BotCard>
               <BoardingPass summary={message.display.props.summary} />
             </BotCard>
-          ) : message.display?.name === 'listDestinations' ? (
+          ) : message.display?.name === 'showResumeDownloadCard' ? (
             <BotCard>
-              <Destinations destinations={message.display.props.destinations} />
+              <DownloadResumeCard
+                link={
+                  'https://docs.google.com/document/d/1or49PZreGh2DtLzO4Y-7YmTnhw5DlqHz5nN7CIhWCAY/edit?usp=sharing'
+                }
+              />
             </BotCard>
           ) : (
             <BotMessage content={message.content} />
