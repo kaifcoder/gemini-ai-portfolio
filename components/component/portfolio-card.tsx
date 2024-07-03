@@ -77,7 +77,7 @@ export function PortfolioCard({ user }: { user: string }) {
             <div>Flutter</div>
             <div>Firebase</div>
           </div>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             {!loading &&
               projects &&
               projects.map(
