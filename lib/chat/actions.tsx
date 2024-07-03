@@ -33,7 +33,6 @@ import { z } from 'zod'
 import { ListHotels } from '@/components/hotels/list-hotels'
 import { Destinations } from '@/components/flights/destinations'
 import { Video } from '@/components/media/video'
-import { rateLimit } from './ratelimit'
 
 const genAI = new GoogleGenerativeAI(
   process.env.GOOGLE_GENERATIVE_AI_API_KEY || ''
@@ -42,7 +41,7 @@ const genAI = new GoogleGenerativeAI(
 async function describeImage(imageBase64: string) {
   'use server'
 
-  await rateLimit()
+
 
   const aiState = getMutableAIState()
   const spinnerStream = createStreamableUI(null)
