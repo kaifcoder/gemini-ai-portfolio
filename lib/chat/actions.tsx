@@ -41,8 +41,6 @@ const genAI = new GoogleGenerativeAI(
 async function describeImage(imageBase64: string) {
   'use server'
 
-
-
   const aiState = getMutableAIState()
   const spinnerStream = createStreamableUI(null)
   const messageStream = createStreamableUI(null)
@@ -130,8 +128,6 @@ async function describeImage(imageBase64: string) {
 
 async function submitUserMessage(content: string) {
   'use server'
-
-  await rateLimit()
 
   const aiState = getMutableAIState()
 

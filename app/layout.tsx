@@ -8,11 +8,9 @@ import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 import { Toaster } from '@/components/ui/sonner'
 
-
 export const metadata = {
- 
   title: {
-    default: 'Next.js Gemini Chatbot',
+    default: 'Next.js Gemini Chatbot'
   },
   description:
     'Build your own generative UI chatbot using the Vercel AI SDK and Google Gemini',
@@ -44,7 +42,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           GeistMono.variable
         )}
       >
-        
         <Toaster position="top-center" />
         <Providers
           attribute="class"
@@ -56,9 +53,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <Header />
             <main className="flex flex-col flex-1">{children}</main>
           </div>
-          <TailwindIndicator />
         </Providers>
-        <Analytics />
       </body>
     </html>
   )
