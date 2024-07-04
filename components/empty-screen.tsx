@@ -31,8 +31,7 @@ export function EmptyScreen() {
           <LinkPreview url="https://www.vercel.com/next" className="font-bold">
             Next.JS
           </LinkPreview>{' '}
-          and Vercel AI SDK. Login to save your chats and share with others.
-          Enjoy! 🚀
+          and Vercel AI SDK. Enjoy! 🚀
         </p>
       </div>
     </div>
