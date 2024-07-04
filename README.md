@@ -1,4 +1,5 @@
 <a href="https://kaifaiportfolio.vercel.app/">
+  <img src="https://github.com/kaifcoder/gemini-ai-portfolio/assets/57701861/f59afa66-a94d-4e5f-a304-0afe99da3fc1" alt="kaif portfolio image"/>
   <h1 align="center">AI Portfolio of Mohd Kaif</h1>
 </a>
 
