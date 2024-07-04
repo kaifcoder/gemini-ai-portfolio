@@ -1,5 +1,4 @@
-<a href="https://kaifaiporfolio.vercel.app/">
-  <img alt="Next.js 14 and App Router-ready AI chatbot." src="https://gemini-chatbot.vercel.rocks/og.png">
+<a href="https://kaifaiportfolio.vercel.app/">
   <h1 align="center">AI Portfolio of Mohd Kaif</h1>
 </a>
 
@@ -12,7 +11,6 @@ This is a unique Portfolio of Mohd Kaif In which user can interact with the AI c
   <a href="#model-providers"><strong>Model Providers</strong></a> ·
   <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
   <a href="#running-locally"><strong>Running locally</strong></a> ·
-  <a href="#authors"><strong>Authors</strong></a>
 </p>
 <br/>
 
@@ -26,8 +24,7 @@ This is a unique Portfolio of Mohd Kaif In which user can interact with the AI c
   - Styling with [Tailwind CSS](https://tailwindcss.com)
   - [Radix UI](https://radix-ui.com) for headless component primitives
   - Icons from [Phosphor Icons](https://phosphoricons.com)
-- Chat History, rate limiting, and session storage with [Vercel KV](https://vercel.com/storage/kv)
-- [NextAuth.js](https://github.com/nextauthjs/next-auth) for authentication
+
 
 ## Model Providers
 
