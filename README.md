@@ -1,10 +1,10 @@
-<a href="https://chat.vercel.ai/">
+<a href="https://kaifaiporfolio.vercel.app/">
   <img alt="Next.js 14 and App Router-ready AI chatbot." src="https://gemini-chatbot.vercel.rocks/og.png">
-  <h1 align="center">Next.js AI Chatbot</h1>
+  <h1 align="center">AI Portfolio of Mohd Kaif</h1>
 </a>
 
 <p align="center">
-  An open-source AI chatbot app template built with Next.js, the Vercel AI SDK, Google Gemini, and Vercel KV.
+This is a unique Portfolio of Mohd Kaif In which user can interact with the AI chatbot and can see the projects and blogs. This is Made with Aceternity UI,Google gemini and Vercel AI SDK.
 </p>
 
 <p align="center">
@@ -31,7 +31,7 @@
 
 ## Model Providers
 
-This template ships with Google Gemini `models/gemini-1.0-pro-001` as the default. However, thanks to the [Vercel AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), [Hugging Face](https://huggingface.co), or using [LangChain](https://js.langchain.com) with just a few lines of code.
+This template ships with Google Gemini `models/gemini-1.5-pro` as the default. However, thanks to the [Vercel AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), [Hugging Face](https://huggingface.co), or using [LangChain](https://js.langchain.com) with just a few lines of code.
 
 ## Deploy Your Own
 
@@ -43,7 +43,6 @@ You can deploy your own version of the Next.js AI Chatbot to Vercel with one cli
 
 You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js AI Chatbot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
 
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various Google Cloud and authentication provider accounts.
 
 1. Install Vercel CLI: `npm i -g vercel`
 2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
@@ -55,12 +54,3 @@ pnpm dev
 ```
 
 Your app template should now be running on [localhost:3000](http://localhost:3000/).
-
-## Authors
-
-This library is created by [Vercel](https://vercel.com) and [Next.js](https://nextjs.org) team members, with contributions from:
-
-- Jared Palmer ([@jaredpalmer](https://twitter.com/jaredpalmer)) - [Vercel](https://vercel.com)
-- Shu Ding ([@shuding\_](https://twitter.com/shuding_)) - [Vercel](https://vercel.com)
-- shadcn ([@shadcn](https://twitter.com/shadcn)) - [Vercel](https://vercel.com)
-- Jeremy Philemon ([@jrmyphlmn](https://twitter.com/jrmyphlmn)) - [Vercel](https://vercel.com)
