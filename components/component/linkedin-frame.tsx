@@ -24,7 +24,9 @@ export default function LinkedinFrame({ user }: { user: string }) {
       >
         <a
           className="badge-base__link LI-simple-link"
-          href="https://in.linkedin.com/in/mohdkaif00?trk=profile-badge"
+          href={`https://www.linkedin.com/in/mohdkaif00`}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Mohd Kaif
         </a>

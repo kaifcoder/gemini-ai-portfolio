@@ -40,6 +40,7 @@ import DownloadResumeCard from '@/components/portfolio/resume-card'
 import { PortfolioCard } from '@/components/component/portfolio-card'
 import LinkedinFrame from '@/components/component/linkedin-frame'
 import { ContactInfo } from '@/components/component/contact-info'
+import { ProjectGrid } from '@/components/component/porject-grid'
 
 const genAI = new GoogleGenerativeAI(
   process.env.GOOGLE_GENERATIVE_AI_API_KEY || ''
@@ -216,6 +217,13 @@ async function submitUserMessage(content: string) {
             parameters: z.object({
               user: z.string().describe('user name')
             })
+          },
+          showProjects: {
+            description:
+              'Show the UI projects of the Mohd Kaif. when user asks to tell about projects.',
+            parameters: z.object({
+              user: z.string().describe('user name').optional()
+            })
           }
 
           // showResumeDownloadCard: {
@@ -233,63 +241,6 @@ You are a personal assistant to Mohd Kaif, helping to keep track of projects, ex
           6. Chat: Provide a chat interface for users to ask questions and receive responses.
 
           Be sure to handle user queries with care and provide accurate information. also try your best to prove me suitable for the role of software engineer, full stack developer, moblie developer talk on behalf of me act as Mohd Kaif. Add call to actions for users to interact with the chatbot.
-
-          Information about Mohd Kaif if tools are not available: 
-          Mohd Kaif
-Lucknow, UP, India 
-
-EDUCATION	
-
-
-SHRI RAMSWAROOP MEMORIAL COLLEGE OF ENGINEERING AND MANAGEMENT	Lucknow, UP, India
-Bachelor of Technology	Expected July 2024
-Major in Computer Science and engineering
-Cumulative GPA: 7.8/10.0
-Relevant Coursework:  Software Engineering; Operating Systems; Algorithms; Database Management system
-
-RANI LAXMI BAI MEMORIAL SCHOOL	Lucknow, UP, India
-Intermediate in Science stream 	Apr 2018 - Mar 2019
-Percentage: 92.6%
-
-INTERNSHIP/FREELANCE  EXPERIENCE	
-
-
-MEDISHIELD HEALTHCARE  	
-Freelancer (Full Stack App Developer) 	Jan 2024 – Jun 2024
-Single handedly Led the development of the MediShield application including design, development, and deployment of android / iOS applications.
-Node.js backend with full-fledged admin panel on NextJS.
-Created seamless integration with Razor pay payment gateway, zoho books and shiprocket for Payment processing, order and inventory synchronization and shipping process respectively. 
-
-VISANKA TECHNOLOGIES PVT. LTD.	
-Android App developer 	dec 2022 – jan 2023
-Completed one month internship on android development worked on truecaller clone project.
-
-PROJECTS	
-
-
-GEMINI MULTIPDF CHATBOT	Apr 2024
-Streamlit-based application powered by the Gemini conversational AI model. Upload multiple PDF files, extract text, and engage in natural language conversations to receive detailed responses based on the document context. Enhance your interaction with PDF documents using this intuitive and intelligent chatbot.
-100+ stars and 80+ forks on github and 5000+ unique users. Live Link
-
-MEDISHIELD APP	jun 2024
-MediShield App offers a streamlined solution for dental equipment needs. Browse a diverse catalog, place orders seamlessly, and track in real-time.
-Live application on google play store with 100+ downloads and soon will be available on app store 
-Technologies used are Flutter, firebase, mongodb, node.js, express, next.js and gemini for chatbot.
-
-ERASER.IO CLONE	Mar 2024
-A clone of Eraser.io built with a modern tech stack! Leveraging Next.js, Tailwind CSS, Shadcn/UI, Convex Database, and Kinde Authentication, this project aims to push the boundaries of web development. 
-https://eraser-clone-2.vercel.app/ ( live link )
-
-
-ADDITIONAL	
-
-
-Technical Skills: Advanced in Full Stack development using next.js/flutter; Proficient in Data Structures and algorithms, Python, React.js, Node.js, c++ 
-Languages: Fluent in Hindi and English
-Certifications & Training: Fundamentals of Data Analytics by NASSCOM, Python and Artificial Intelligence training by IBM.
-Publications: Gemini MultiPDF Chatbot: Multiple Document RAG Chatbot using Gemini Large Language Model (IJRASET)
-Interests:  Listening to Music, Exploring new technologies
-
       `,
         messages: [...history]
       })
@@ -446,6 +397,30 @@ Interests:  Listening to Music, Exploring new technologies
                 <DownloadResumeCard />
               </BotCard>
             )
+          } else if (toolName === 'showProjects') {
+            aiState.done({
+              ...aiState.get(),
+              interactions: [],
+              messages: [
+                ...aiState.get().messages,
+                {
+                  id: nanoid(),
+                  role: 'assistant',
+                  content: 'Here are the projects of Mohd Kaif.',
+                  display: {
+                    name: 'showProjects',
+                    props: {
+                      summary: args
+                    }
+                  }
+                }
+              ]
+            })
+            uiStream.update(
+              <BotCard>
+                <ProjectGrid />
+              </BotCard>
+            )
           }
         }
       }
@@ -572,6 +547,10 @@ export const getUIStateFromAIState = (aiState: Chat) => {
           ) : message.display?.name === 'showPortfolio' ? (
             <BotCard>
               <PortfolioCard />
+            </BotCard>
+          ) : message.display?.name === 'showProjects' ? (
+            <BotCard>
+              <ProjectGrid />
             </BotCard>
           ) : message.display?.name === 'showResumeDownloadCard' ? (
             <BotCard>

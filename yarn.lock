@@ -710,6 +710,18 @@
   dependencies:
     tslib "^2.4.0"
 
+"@tabler/icons-react@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-3.8.0.tgz#490ebcb19793796bdd72ae7dd3f0b169c1197340"
+  integrity sha512-+M7x4uCmaZlFBuAXKnu7cCvjX48Ml//GJxgGTOoAq8N5R6NkIGV0o7UmGVlb9Vfw2GhJ638MSSJ7mksSjdSXgQ==
+  dependencies:
+    "@tabler/icons" "3.8.0"
+
+"@tabler/icons@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.8.0.tgz#99a309d60814368705a648d7d0cef77a7a5ffcc1"
+  integrity sha512-SVZSrb0REaTEu+soj+9RTnPpCqIWFYHJ0lhyk+oo6uXr33Ecx2JBcBGeEo/WbIWZg4UF8NIZSVKQgI2PHBokJA==
+
 "@tailwindcss/typography@^0.5.10":
   version "0.5.13"
   resolved "https://registry.yarnpkg.com/@tailwindcss/typography/-/typography-0.5.13.tgz#cd788a4fa4d0ca2506e242d512f377b22c1f7932"

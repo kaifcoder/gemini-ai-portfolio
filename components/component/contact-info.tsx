@@ -1,51 +1,80 @@
 /* eslint-disable @next/next/no-img-element */
-
+'use client'
 import { Card } from '@/components/ui/card'
 import { JSX, SVGProps } from 'react'
+import { SparklesIcon } from '../ui/icons'
+import { useActions, useUIState } from 'ai/rsc'
 
+export const suggestions = [
+  "Tell me about Mohd Kaif's projects",
+  'Give me the resume download link of Mohd Kaif',
+  'Show me Portfolio of Kaif'
+]
 export function ContactInfo() {
+  const { submitUserMessage } = useActions()
+  const [_, setMessages] = useUIState()
   return (
-    <Card className="w-full max-w-md p-6 grid gap-6">
-      <div className="flex items-center gap-4">
-        <div>
-          <h3 className="text-xl font-semibold">Mohd Kaif</h3>
-          <p className="text-muted-foreground">
-            Full Stack Developer | Freelancer
-          </p>
+    <>
+      <Card className="w-full max-w-md p-6 grid gap-6">
+        <div className="flex items-center gap-4">
+          <div>
+            <h3 className="text-xl font-semibold">Mohd Kaif</h3>
+            <p className="text-muted-foreground">
+              Full Stack Developer | Freelancer
+            </p>
+          </div>
         </div>
+        <div className="grid gap-2">
+          <div className="flex items-center gap-2">
+            <MailIcon className="size-5 text-muted-foreground" />
+            <a
+              href="mailto:kaifmohd2014@gmail.com"
+              className="text-muted-foreground hover:underline"
+            >
+              kaifmohd2014@gmail.com
+            </a>
+          </div>
+          <div className="flex items-center gap-2">
+            <PhoneIcon className="size-5 text-muted-foreground" />
+            <a
+              href="tel:+91936834706"
+              className="text-muted-foreground hover:underline"
+            >
+              +91 9336834706
+            </a>
+          </div>
+          <div className="flex items-center gap-2">
+            <LinkedinIcon className="size-5 text-muted-foreground" />
+            <a
+              href="https://in.linkedin.com/in/mohdkaif00"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:underline"
+            >
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </Card>
+      <div className="flex flex-col mt-4 sm:flex-row max-w-2xl items-start gap-2">
+        {suggestions.map(suggestion => (
+          <div
+            key={suggestion}
+            className="flex items-center gap-2 px-3 py-2 text-sm transition-colors bg-zinc-50 hover:bg-zinc-100 rounded-xl cursor-pointer"
+            onClick={async () => {
+              const response = await submitUserMessage(suggestion)
+              setMessages((currentMessages: any[]) => [
+                ...currentMessages,
+                response
+              ])
+            }}
+          >
+            <SparklesIcon />
+            {suggestion}
+          </div>
+        ))}
       </div>
-      <div className="grid gap-2">
-        <div className="flex items-center gap-2">
-          <MailIcon className="size-5 text-muted-foreground" />
-          <a
-            href="mailto:kaifmohd2014@gmail.com"
-            className="text-muted-foreground hover:underline"
-          >
-            kaifmohd2014@gmail.com
-          </a>
-        </div>
-        <div className="flex items-center gap-2">
-          <PhoneIcon className="size-5 text-muted-foreground" />
-          <a
-            href="tel:+91936834706"
-            className="text-muted-foreground hover:underline"
-          >
-            +91 9336834706
-          </a>
-        </div>
-        <div className="flex items-center gap-2">
-          <LinkedinIcon className="size-5 text-muted-foreground" />
-          <a
-            href="https://in.linkedin.com/in/mohdkaif00"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:underline"
-          >
-            LinkedIn
-          </a>
-        </div>
-      </div>
-    </Card>
+    </>
   )
 }
 

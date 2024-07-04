@@ -1,19 +1,17 @@
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
-import { Analytics } from '@vercel/analytics/react'
 import '@/app/globals.css'
 import { cn } from '@/lib/utils'
-import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 import { Toaster } from '@/components/ui/sonner'
 
 export const metadata = {
   title: {
-    default: 'Next.js Gemini Chatbot'
+    default: 'AI Portfolio of Mohd Kaif'
   },
   description:
-    'Build your own generative UI chatbot using the Vercel AI SDK and Google Gemini',
+    'A unique portfolio of Mohd Kaif, a passionate developer who loves to build things with code.',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',

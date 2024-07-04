@@ -27,15 +27,20 @@ export function PortfolioCard({ user }: { user: string }) {
   // fetch top 2 projects of kaifcoder from github
   const [projects, setProjects] = useState([]) as any
   const [loading, setLoading] = useState(false)
+  const [avatar, setAvatar] = useState('')
 
   // fetch top 2 projects of kaifcoder from github
   const fetchProjects = async () => {
     setLoading(true)
     const response = await fetch(
-      `https://api.github.com/users/kaifcoder/repos?sort=updated&per_page=2`
+      `https://api.github.com/users/kaifcoder/repos?sort=updated`
     )
-    const data = await response.json()
+    let data = await response.json()
+    // get most starred 2 repositories
+    data.sort((a: any, b: any) => b.stargazers_count - a.stargazers_count)
+    data = data.slice(0, 4)
     console.log(data)
+    setAvatar(data[0].owner.avatar_url)
     setProjects(data)
     setLoading(false)
   }
@@ -51,7 +56,7 @@ export function PortfolioCard({ user }: { user: string }) {
       <Card className="w-full max-w-2xl p-8 grid gap-8 mb-2">
         <div className="flex flex-col items-center gap-6">
           <Avatar className="size-24">
-            <AvatarImage src="/placeholder-user.jpg" />
+            <AvatarImage src={avatar} />
             <AvatarFallback>MK</AvatarFallback>
           </Avatar>
           <div className="text-center space-y-2">
