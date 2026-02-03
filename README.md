@@ -4,7 +4,7 @@
 </a>
 
 <p align="center">
-This is a unique Portfolio of Mohd Kaif in which user can interact with the AI chatbot and can see the projects and blogs. This is Made with Aceternity UI, GitHub Copilot and Vercel AI SDK.
+This is a unique Portfolio of Mohd Kaif in which user can interact with the AI chatbot and can see the projects and blogs. This is Made with Aceternity UI, Google Gemini and Vercel AI SDK.
 </p>
 
 <p align="center">
@@ -20,7 +20,7 @@ This is a unique Portfolio of Mohd Kaif in which user can interact with the AI c
 - [Next.js](https://nextjs.org) App Router
 - React Server Components (RSCs), Suspense, and Server Actions
 - [Vercel AI SDK](https://sdk.vercel.ai/docs) for streaming chat UI
-- Support for GitHub Copilot (default), OpenAI, Anthropic, Cohere, Hugging Face, or custom AI chat models and/or LangChain
+- Support for Google Gemini (default), OpenAI, Anthropic, Cohere, Hugging Face, or custom AI chat models and/or LangChain
 - [shadcn/ui](https://ui.shadcn.com)
   - Styling with [Tailwind CSS](https://tailwindcss.com)
   - [Radix UI](https://radix-ui.com) for headless component primitives
@@ -29,15 +29,13 @@ This is a unique Portfolio of Mohd Kaif in which user can interact with the AI c
 
 ## Model Providers
 
-This template ships with GitHub Copilot `gpt-4o` as the default. Thanks to the [Vercel AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), [Hugging Face](https://huggingface.co), or using [LangChain](https://js.langchain.com) with just a few lines of code.
-
-To obtain a GitHub Copilot token, you can use [`opencode-copilot-auth`](https://github.com/sst/opencode-copilot-auth).
+This template ships with Google Gemini `models/gemini-1.5-pro` as the default. However, thanks to the [Vercel AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), [Hugging Face](https://huggingface.co), or using [LangChain](https://js.langchain.com) with just a few lines of code.
 
 ## Deploy Your Own
 
 You can deploy your own version of the Next.js AI Chatbot to Vercel with one click:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=Next.js+Chat&demo-description=A+full-featured%2C+hackable+Next.js+AI+chatbot+built+by+Vercel+Labs&demo-url=https%3A%2F%2Fchat.vercel.ai%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4aVPvWuTmBvzM5cEdRdqeW%2F4234f9baf160f68ffb385a43c3527645%2FCleanShot_2023-06-16_at_17.09.21.png&project-name=Next.js+Chat&repository-name=nextjs-chat&repository-url=https%3A%2F%2Fgithub.com%2Fkaifcoder%2Fgemini-ai-portfolio&from=templates&skippable-integrations=1&env=COPILOT_TOKEN%2CAUTH_SECRET&envDescription=How+to+get+these+env+vars&envLink=https%3A%2F%2Fgithub.com%2Fkaifcoder%2Fgemini-ai-portfolio%2Fblob%2Fmain%2F.env.example&teamCreateStatus=hidden&stores=[{%22type%22:%22kv%22}])
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=Next.js+Chat&demo-description=A+full-featured%2C+hackable+Next.js+AI+chatbot+built+by+Vercel+Labs&demo-url=https%3A%2F%2Fchat.vercel.ai%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4aVPvWuTmBvzM5cEdRdqeW%2F4234f9baf160f68ffb385a43c3527645%2FCleanShot_2023-06-16_at_17.09.21.png&project-name=Next.js+Chat&repository-name=nextjs-chat&repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fgemini-chatbot&from=templates&skippable-integrations=1&env=GOOGLE_GENERATIVE_AI_API_KEY%2CAUTH_SECRET&envDescription=How+to+get+these+env+vars&envLink=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fgemini-chatbot%2Fblob%2Fmain%2F.env.example&teamCreateStatus=hidden&stores=[{%22type%22:%22kv%22}])
 
 ## Running locally
 

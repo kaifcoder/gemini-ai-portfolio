@@ -30,7 +30,8 @@ import { PurchaseTickets } from '@/components/flights/purchase-ticket'
 import { CheckIcon, SpinnerIcon } from '@/components/ui/icons'
 import { format } from 'date-fns'
 import { streamText } from 'ai'
-import { createGitHubCopilotOpenAICompatible } from '@opeoginni/github-copilot-openai-compatible'
+import { google } from '@ai-sdk/google'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 import { z } from 'zod'
 import { ListHotels } from '@/components/hotels/list-hotels'
 import { Destinations } from '@/components/flights/destinations'
@@ -41,15 +42,9 @@ import LinkedinFrame from '@/components/component/linkedin-frame'
 import { ContactInfo } from '@/components/component/contact-info'
 import { ProjectGrid } from '@/components/component/porject-grid'
 
-const githubCopilot = createGitHubCopilotOpenAICompatible({
-  apiKey: process.env.COPILOT_TOKEN,
-  headers: {
-    "Copilot-Integration-Id": "vscode-chat",
-    "User-Agent": "GitHubCopilotChat/0.26.7",
-    "Editor-Version": "vscode/1.104.1",
-    "Editor-Plugin-Version": "copilot-chat/0.26.7"
-  },
-})
+const genAI = new GoogleGenerativeAI(
+  process.env.GOOGLE_GENERATIVE_AI_API_KEY || ''
+)
 
 async function describeImage(imageBase64: string) {
   'use server'
@@ -89,32 +84,19 @@ async function describeImage(imageBase64: string) {
       10. Animal Farm by George Orwell
       `
       } else {
-        // Image analysis with Copilot model
-        const result = await streamText({
-          model: githubCopilot('gpt-4o'),
-          messages: [
-            {
-              role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: 'List the books in this image.'
-                },
-                {
-                  type: 'image',
-                  image: imageBase64
-                }
-              ]
-            }
-          ]
-        })
-        
-        text = ''
-        for await (const delta of result.fullStream) {
-          if (delta.type === 'text-delta') {
-            text += delta.textDelta
+        const imageData = imageBase64.split(',')[1]
+
+        const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' })
+        const prompt = 'List the books in this image.'
+        const image = {
+          inlineData: {
+            data: imageData,
+            mimeType: 'image/png'
           }
         }
+
+        const result = await model.generateContent([prompt, image])
+        text = result.response.text()
         console.log(text)
       }
 
@@ -183,7 +165,7 @@ async function submitUserMessage(content: string) {
   ;(async () => {
     try {
       const result = await streamText({
-        model: githubCopilot('gpt-4o'),
+        model: google('models/gemini-1.5-flash'),
         temperature: 0,
         tools: {
           showFlights: {

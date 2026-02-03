@@ -22,10 +22,10 @@ export function EmptyScreen() {
           </LinkPreview>
           ,{' '}
           <LinkPreview
-            url="https://github.com/features/copilot"
+            url="https://ai.google.dev/gemini-api/docs"
             className="font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-500 to-violet-500"
           >
-            GitHub Copilot
+            Google Gemini
           </LinkPreview>
           ,{' '}
           <LinkPreview url="https://www.vercel.com/next" className="font-bold">
