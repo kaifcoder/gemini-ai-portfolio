@@ -68,7 +68,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
       3,
       true
     )}${fileExtension}`
-    const fileName = window.prompt('Enter file name' || '', suggestedFileName)
+    const fileName = window.prompt('Enter file name', suggestedFileName)
 
     if (!fileName) {
       // User pressed cancel on prompt.
@@ -117,6 +117,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
           </Button>
         </div>
       </div>
+      {/* @ts-expect-error - Type incompatibility with bundler moduleResolution */}
       <SyntaxHighlighter
         language={language}
         style={coldarkDark}
