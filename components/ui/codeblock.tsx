@@ -117,7 +117,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
           </Button>
         </div>
       </div>
-      {/* @ts-expect-error - Type incompatibility with bundler moduleResolution */}
+      {/* @ts-expect-error - react-syntax-highlighter types are incompatible with bundler moduleResolution. See: https://github.com/react-syntax-highlighter/react-syntax-highlighter/issues/539 */}
       <SyntaxHighlighter
         language={language}
         style={coldarkDark}

@@ -4,7 +4,7 @@
 </a>
 
 <p align="center">
-This is a unique Portfolio of Mohd Kaif In which user can interact with the AI chatbot and can see the projects and blogs. This is Made with Aceternity UI, GitHub Copilot and Vercel AI SDK.
+This is a unique Portfolio of Mohd Kaif in which user can interact with the AI chatbot and can see the projects and blogs. This is Made with Aceternity UI, GitHub Copilot and Vercel AI SDK.
 </p>
 
 <p align="center">
