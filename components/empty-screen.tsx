@@ -25,7 +25,7 @@ export function EmptyScreen() {
             url="https://ai.google.dev/gemini-api/docs"
             className="font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-500 to-violet-500"
           >
-            Google gemini
+            Google Gemini
           </LinkPreview>
           ,{' '}
           <LinkPreview url="https://www.vercel.com/next" className="font-bold">

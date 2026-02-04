@@ -4,7 +4,7 @@
 </a>
 
 <p align="center">
-This is a unique Portfolio of Mohd Kaif In which user can interact with the AI chatbot and can see the projects and blogs. This is Made with Aceternity UI,Google gemini and Vercel AI SDK.
+This is a unique Portfolio of Mohd Kaif in which user can interact with the AI chatbot and can see the projects and blogs. This is Made with Aceternity UI, Google Gemini and Vercel AI SDK.
 </p>
 
 <p align="center">
@@ -29,7 +29,7 @@ This is a unique Portfolio of Mohd Kaif In which user can interact with the AI c
 
 ## Model Providers
 
-This template ships with Google Gemini `models/gemini-1.5-pro` as the default. However, thanks to the [Vercel AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), [Hugging Face](https://huggingface.co), or using [LangChain](https://js.langchain.com) with just a few lines of code.
+This template ships with Google Gemini `gemini-1.5-flash` as the default. Thanks to the [Vercel AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), [Hugging Face](https://huggingface.co), or using [LangChain](https://js.langchain.com) with just a few lines of code.
 
 ## Deploy Your Own
 

@@ -31,7 +31,6 @@ import { CheckIcon, SpinnerIcon } from '@/components/ui/icons'
 import { format } from 'date-fns'
 import { streamText } from 'ai'
 import { google } from '@ai-sdk/google'
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import { z } from 'zod'
 import { ListHotels } from '@/components/hotels/list-hotels'
 import { Destinations } from '@/components/flights/destinations'
@@ -41,10 +40,6 @@ import { PortfolioCard } from '@/components/component/portfolio-card'
 import LinkedinFrame from '@/components/component/linkedin-frame'
 import { ContactInfo } from '@/components/component/contact-info'
 import { ProjectGrid } from '@/components/component/porject-grid'
-
-const genAI = new GoogleGenerativeAI(
-  process.env.GOOGLE_GENERATIVE_AI_API_KEY || ''
-)
 
 async function describeImage(imageBase64: string) {
   'use server'
@@ -84,19 +79,32 @@ async function describeImage(imageBase64: string) {
       10. Animal Farm by George Orwell
       `
       } else {
-        const imageData = imageBase64.split(',')[1]
-
-        const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' })
-        const prompt = 'List the books in this image.'
-        const image = {
-          inlineData: {
-            data: imageData,
-            mimeType: 'image/png'
+        // Image analysis with Gemini vision model
+        const result = await streamText({
+          model: google('gemini-1.5-flash'),
+          messages: [
+            {
+              role: 'user',
+              content: [
+                {
+                  type: 'text',
+                  text: 'List the books in this image.'
+                },
+                {
+                  type: 'image',
+                  image: imageBase64
+                }
+              ]
+            }
+          ]
+        })
+        
+        text = ''
+        for await (const delta of result.fullStream) {
+          if (delta.type === 'text-delta') {
+            text += delta.textDelta
           }
         }
-
-        const result = await model.generateContent([prompt, image])
-        text = result.response.text()
         console.log(text)
       }
 
@@ -116,9 +124,8 @@ async function describeImage(imageBase64: string) {
     } catch (e) {
       console.error(e)
 
-      const error = new Error(
-        'The AI got rate limited, please try again later.'
-      )
+      const errorMessage = e instanceof Error ? e.message : 'The AI got rate limited, please try again later.'
+      const error = new Error(errorMessage)
       uiStream.error(error)
       spinnerStream.error(error)
       messageStream.error(error)
@@ -165,7 +172,7 @@ async function submitUserMessage(content: string) {
   ;(async () => {
     try {
       const result = await streamText({
-        model: google('models/gemini-1.5-flash'),
+        model: google('gemini-1.5-flash'),
         temperature: 0,
         tools: {
           showFlights: {
@@ -442,10 +449,9 @@ async function submitUserMessage(content: string) {
       textStream.done()
       messageStream.done()
     } catch (e) {
-      console.log(e)
-      const error = new Error(
-        'The AI got rate limited, please try again later.'
-      )
+      console.error(e)
+      const errorMessage = e instanceof Error ? e.message : 'The AI got rate limited, please try again later.'
+      const error = new Error(errorMessage)
       uiStream.error(error)
       textStream.error(error)
       messageStream.error(error)
