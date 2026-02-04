@@ -81,7 +81,7 @@ async function describeImage(imageBase64: string) {
       } else {
         // Image analysis with Gemini vision model
         const result = await streamText({
-          model: google('gemini-3-flash-preview'),
+          model: google('gemini-1.5-flash'),
           messages: [
             {
               role: 'user',
@@ -124,9 +124,8 @@ async function describeImage(imageBase64: string) {
     } catch (e) {
       console.error(e)
 
-      const error = new Error(
-        'The AI got rate limited, please try again later.'
-      )
+      const errorMessage = e instanceof Error ? e.message : 'The AI got rate limited, please try again later.'
+      const error = new Error(errorMessage)
       uiStream.error(error)
       spinnerStream.error(error)
       messageStream.error(error)
@@ -173,7 +172,7 @@ async function submitUserMessage(content: string) {
   ;(async () => {
     try {
       const result = await streamText({
-        model: google('gemini-3-flash-preview'),
+        model: google('gemini-1.5-flash'),
         temperature: 0,
         tools: {
           showFlights: {
@@ -450,10 +449,9 @@ async function submitUserMessage(content: string) {
       textStream.done()
       messageStream.done()
     } catch (e) {
-      console.log(e)
-      const error = new Error(
-        'The AI got rate limited, please try again later.'
-      )
+      console.error(e)
+      const errorMessage = e instanceof Error ? e.message : 'The AI got rate limited, please try again later.'
+      const error = new Error(errorMessage)
       uiStream.error(error)
       textStream.error(error)
       messageStream.error(error)
