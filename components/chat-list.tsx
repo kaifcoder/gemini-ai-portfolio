@@ -1,13 +1,11 @@
 import { Session } from '@/lib/types'
 import { UIMessage as Message, isTextUIPart, isToolUIPart, getToolName } from 'ai'
-import { BotCard, BotMessage, UserMessage } from './stocks/message'
+import { BotCard, BotMessage, UserMessage } from './ui/chat-message'
 import DownloadResumeCard from './portfolio/resume-card'
 import { PortfolioCard } from './component/portfolio-card'
 import LinkedinFrame from './component/linkedin-frame'
 import { ContactInfo } from './component/contact-info'
 import { ProjectGrid } from './component/porject-grid'
-import { ListFlights } from './flights/list-flights'
-import { SelectSeats } from './flights/select-seats'
 
 export interface ChatList {
   messages: Message[]
@@ -50,18 +48,6 @@ function ToolInvocationResult({ toolName, result }: ToolInvocationResultProps) {
       return (
         <BotCard>
           <ProjectGrid />
-        </BotCard>
-      )
-    case 'showFlights':
-      return (
-        <BotCard>
-          <ListFlights summary={result as { arrivalCity: string; departingCity: string; arrivalAirport: string; departingAirport: string; date: string }} />
-        </BotCard>
-      )
-    case 'showSeatPicker':
-      return (
-        <BotCard>
-          <SelectSeats summary={result as { departingCity: string; arrivalCity: string; flightCode: string; date: string }} />
         </BotCard>
       )
     default:

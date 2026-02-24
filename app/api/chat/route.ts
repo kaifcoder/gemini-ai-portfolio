@@ -91,30 +91,6 @@ export async function POST(request: Request) {
     `,
     messages: modelMessages,
     tools: {
-      showFlights: {
-        description:
-          "List available flights in the UI. List 3 that match user's query.",
-        inputSchema: z.object({
-          departingCity: z.string(),
-          arrivalCity: z.string(),
-          departingAirport: z.string().describe('Departing airport code'),
-          arrivalAirport: z.string().describe('Arrival airport code'),
-          date: z
-            .string()
-            .describe(
-              "Date of the user's flight, example format: 6 April, 1998"
-            )
-        }),
-        execute: async ({ departingCity, arrivalCity, departingAirport, arrivalAirport, date }) => {
-          return {
-            departingCity,
-            arrivalCity,
-            departingAirport,
-            arrivalAirport,
-            date
-          }
-        }
-      },
       showPortfolio: {
         description:
           'Show the UI for portfolio of user name which is Mohd Kaif.',
@@ -141,19 +117,6 @@ export async function POST(request: Request) {
         }),
         execute: async ({ user }) => {
           return { user: user || 'Mohd Kaif' }
-        }
-      },
-      showSeatPicker: {
-        description:
-          'Show the UI to choose or change seat for the selected flight.',
-        inputSchema: z.object({
-          departingCity: z.string(),
-          arrivalCity: z.string(),
-          flightCode: z.string(),
-          date: z.string()
-        }),
-        execute: async ({ departingCity, arrivalCity, flightCode, date }) => {
-          return { departingCity, arrivalCity, flightCode, date }
         }
       },
       showResumeDownloadCard: {

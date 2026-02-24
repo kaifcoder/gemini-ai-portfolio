@@ -16,10 +16,9 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   if (req.method === 'POST') {
     try {
-      // Use x-real-ip, x-forwarded-for, or request IP for rate limiting
+      // Use x-real-ip, x-forwarded-for for rate limiting
       const realIp = req.headers.get('x-real-ip') || 
                      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-                     req.ip ||
                      'anonymous'
       const pipeline = kv.pipeline()
       pipeline.incr(`rate-limit:${realIp}`)
