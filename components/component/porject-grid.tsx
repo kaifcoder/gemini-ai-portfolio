@@ -1,20 +1,11 @@
 'use client'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { BentoGrid, BentoGridItem } from '../ui/bento-grid'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
-import { SparklesIcon } from '../ui/icons'
-import { useUIState, useActions } from 'ai/rsc'
-import Link from 'next/link'
 
 export function ProjectGrid() {
   // fetch most starred repositories of kaifcoder in descending order
-  const suggestions = [
-    'Give me the resume download link of Mohd Kaif',
-    'Show me Portfolio of Kaif'
-  ]
-  const { submitUserMessage } = useActions()
-  const [_, setMessages] = useUIState()
   const [items, setItems] = React.useState([]) as any
   React.useEffect(() => {
     fetch(
@@ -30,67 +21,44 @@ export function ProjectGrid() {
   }, [])
 
   return (
-    <>
-      <BentoGrid className="max-w-4xl mx-auto ">
-        {items &&
-          items.map(
-            (
-              item: {
-                [x: string]: URL
-                homepage: any
-                full_name: any
-                name: any
-                description: any
-              },
-              i: React.Key | null | undefined
-            ) => (
-              // eslint-disable-next-line react/jsx-key
-              <>
-                <BentoGridItem
-                  key={i}
-                  title={item.name}
-                  description={
-                    <div className="h-full flex flex-col">
-                      <p className="text-muted-foreground text-xs flex-1">
-                        {item.description}
-                      </p>
-                      <div className="flex mt-5 items-center gap-2 text-muted-foreground text-sm">
-                        <GitHubLogoIcon className="size-5" />
-                        <span>{item.full_name}</span>
-                      </div>
-                    </div>
-                  }
-                  icon={<GitHubLogoIcon className="size-4 text-neutral-500" />}
-                  className={cn(
-                    i === 3 || i === 6 ? 'md:col-span-2' : '',
-                    'bg-gray-100 cursor-pointer hover:shadow-lg p-6 rounded-xl transition-colors'
-                  )}
-                  onClick={() => {
-                    window.open(item.html_url, '_blank')
-                  }}
-                />
-              </>
-            )
-          )}
-      </BentoGrid>
-      <div className="flex flex-col sm:flex-row mt-4 items-start gap-2">
-        {suggestions.map(suggestion => (
-          <div
-            key={suggestion}
-            className="flex items-center gap-2 px-3 py-2 text-sm transition-colors bg-zinc-50 hover:bg-zinc-100 rounded-xl cursor-pointer"
-            onClick={async () => {
-              const response = await submitUserMessage(suggestion)
-              setMessages((currentMessages: any[]) => [
-                ...currentMessages,
-                response
-              ])
-            }}
-          >
-            <SparklesIcon />
-            {suggestion}
-          </div>
-        ))}
-      </div>
-    </>
+    <BentoGrid className="max-w-4xl mx-auto ">
+      {items &&
+        items.map(
+          (
+            item: {
+              [x: string]: URL
+              homepage: any
+              full_name: any
+              name: any
+              description: any
+            },
+            i: React.Key | null | undefined
+          ) => (
+            <BentoGridItem
+              key={i}
+              title={item.name}
+              description={
+                <div className="h-full flex flex-col">
+                  <p className="text-muted-foreground text-xs flex-1">
+                    {item.description}
+                  </p>
+                  <div className="flex mt-5 items-center gap-2 text-muted-foreground text-sm">
+                    <GitHubLogoIcon className="size-5" />
+                    <span>{item.full_name}</span>
+                  </div>
+                </div>
+              }
+              icon={<GitHubLogoIcon className="size-4 text-neutral-500" />}
+              className={cn(
+                i === 3 || i === 6 ? 'md:col-span-2' : '',
+                'bg-gray-100 cursor-pointer hover:shadow-lg p-6 rounded-xl transition-colors'
+              )}
+              onClick={() => {
+                window.open(item.html_url, '_blank')
+              }}
+            />
+          )
+        )}
+    </BentoGrid>
   )
 }

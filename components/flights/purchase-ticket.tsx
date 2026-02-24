@@ -7,7 +7,8 @@ import {
   SparklesIcon
 } from '@/components/ui/icons'
 import { cn } from '@/lib/utils'
-import { readStreamableValue, useActions, useUIState } from 'ai/rsc'
+import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
 import { useState } from 'react'
 
 type Status =
@@ -27,6 +28,7 @@ interface PurchaseProps {
     price: number
     seat: string
   }
+  chatId?: string
 }
 
 export const suggestions = [
@@ -42,12 +44,14 @@ export const PurchaseTickets = ({
     arrivalTime: '12:00 PM',
     price: 100,
     seat: '1A'
-  }
+  },
+  chatId
 }: PurchaseProps) => {
   const [currentStatus, setCurrentStatus] = useState(status)
-  const { requestCode, validateCode, submitUserMessage } = useActions()
-  const [display, setDisplay] = useState(null)
-  const [_, setMessages] = useUIState()
+  const { sendMessage } = useChat({
+    id: chatId,
+    transport: new DefaultChatTransport({ api: '/api/chat' })
+  })
 
   return (
     <div className="grid gap-4">
@@ -72,48 +76,17 @@ export const PurchaseTickets = ({
             </p>
             <button
               className="p-2 text-center rounded-full cursor-pointer bg-zinc-900 text-zinc-50 hover:bg-zinc-600 transition-colors"
-              onClick={async () => {
-                const { status, display } = await requestCode()
-                setCurrentStatus(status)
-                setDisplay(display)
+              onClick={() => {
+                setCurrentStatus('completed')
               }}
             >
               Pay $981
             </button>
           </div>
-        ) : currentStatus === 'requires_code' ? (
-          <>
-            <div>
-              Enter the code sent to your phone (***) *** 6137 to complete your
-              purchase.
-            </div>
-            <div className="flex justify-center p-2 text-center border rounded-full text-zinc-950">
-              <input
-                className="w-16 text-center bg-transparent outline-none tabular-nums"
-                type="text"
-                maxLength={6}
-                placeholder="------"
-                autoFocus
-              />
-            </div>
-            <button
-              className="p-2 text-center rounded-full cursor-pointer bg-zinc-900 text-zinc-50 hover:bg-zinc-600 transition-colors"
-              onClick={async () => {
-                const { status, display } = await validateCode()
-
-                for await (const statusFromStream of readStreamableValue(
-                  status
-                )) {
-                  setCurrentStatus(statusFromStream as Status)
-                  setDisplay(display)
-                }
-              }}
-            >
-              Submit
-            </button>
-          </>
         ) : currentStatus === 'completed' || currentStatus === 'in_progress' ? (
-          display
+          <div className="flex items-center justify-center gap-3 text-green-600">
+            Purchase completed successfully!
+          </div>
         ) : currentStatus === 'expired' ? (
           <div className="flex items-center justify-center gap-3">
             Your Session has expired!
@@ -132,11 +105,7 @@ export const PurchaseTickets = ({
             key={suggestion}
             className="flex items-center gap-2 px-3 py-2 text-sm transition-colors bg-zinc-50 hover:bg-zinc-100 rounded-xl cursor-pointer"
             onClick={async () => {
-              const response = await submitUserMessage(suggestion)
-              setMessages((currentMessages: any[]) => [
-                ...currentMessages,
-                response
-              ])
+              sendMessage({ text: suggestion })
             }}
           >
             <SparklesIcon />

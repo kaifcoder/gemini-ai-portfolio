@@ -1,8 +1,7 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useAIState, useActions, useUIState } from 'ai/rsc'
+import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
 import { useState } from 'react'
 import { SparklesIcon } from '../ui/icons'
 
@@ -13,6 +12,7 @@ interface SelectSeatsProps {
     flightCode: string
     date: string
   }
+  chatId?: string
 }
 
 export const suggestions = [
@@ -26,14 +26,16 @@ export const SelectSeats = ({
     arrivalCity: 'San Francisco',
     flightCode: 'CA123',
     date: '23 March 2024'
-  }
+  },
+  chatId
 }: SelectSeatsProps) => {
   const availableSeats = ['3B', '2D']
-  const [aiState, setAIState] = useAIState()
+  const { sendMessage } = useChat({
+    id: chatId,
+    transport: new DefaultChatTransport({ api: '/api/chat' })
+  })
   const [selectedSeat, setSelectedSeat] = useState('')
   const { departingCity, arrivalCity, flightCode, date } = summary
-  const [_, setMessages] = useUIState()
-  const { submitUserMessage } = useActions()
 
   return (
     <div className="grid gap-4">
@@ -77,13 +79,6 @@ export const SelectSeats = ({
                     }`}
                     onClick={() => {
                       setSelectedSeat(`${row}${seat}`)
-
-                      setAIState({
-                        ...aiState,
-                        interactions: [
-                          `great, I have selected seat ${row}${seat}`
-                        ]
-                      })
                     }}
                   >
                     {seatIndex === 2 ? (
@@ -125,11 +120,7 @@ export const SelectSeats = ({
               key={suggestion}
               className="flex items-center gap-2 px-3 py-2 text-sm transition-colors bg-zinc-50 hover:bg-zinc-100 rounded-xl cursor-pointer"
               onClick={async () => {
-                const response = await submitUserMessage(suggestion, [])
-                setMessages((currentMessages: any[]) => [
-                  ...currentMessages,
-                  response
-                ])
+                sendMessage({ text: suggestion })
               }}
             >
               <SparklesIcon />

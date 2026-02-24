@@ -1,8 +1,7 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useActions, useUIState } from 'ai/rsc'
+import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
 
 interface Hotel {
   id: number
@@ -13,6 +12,7 @@ interface Hotel {
 
 interface ListHotelsProps {
   hotels: Hotel[]
+  chatId?: string
 }
 
 export const ListHotels = ({
@@ -35,10 +35,13 @@ export const ListHotels = ({
       description: 'Vibrant property with free breakfast',
       price: 112
     }
-  ]
+  ],
+  chatId
 }: ListHotelsProps) => {
-  const { submitUserMessage } = useActions()
-  const [_, setMessages] = useUIState()
+  const { sendMessage } = useChat({
+    id: chatId,
+    transport: new DefaultChatTransport({ api: '/api/chat' })
+  })
 
   return (
     <div className="grid gap-4">
@@ -52,13 +55,7 @@ export const ListHotels = ({
             key={hotel.id}
             className="p-2 flex justify-between hover:bg-zinc-50 rounded-xl cursor-pointer gap-4"
             onClick={async () => {
-              const response = await submitUserMessage(
-                `I want to book the ${hotel.name}, proceed to checkout by calling checkoutBooking function.`
-              )
-              setMessages((currentMessages: any[]) => [
-                ...currentMessages,
-                response
-              ])
+              sendMessage({ text: `I want to book the ${hotel.name}, proceed to checkout by calling checkoutBooking function.` })
             }}
           >
             <div className="flex flex-col sm:flex-row gap-4">
@@ -66,6 +63,7 @@ export const ListHotels = ({
                 <img
                   className="object-cover aspect-video h-full rounded-lg"
                   src={`/images/${hotel.id}.jpg`}
+                  alt={`${hotel.name} hotel`}
                 />
               </div>
               <div>

@@ -3,8 +3,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
-import { useActions, useUIState } from 'ai/rsc'
-
 interface Flight {
   id: number
   airlines: string
@@ -34,8 +32,6 @@ export const ListFlights = ({
 }: ListFlightsProps) => {
   const { arrivalCity, departingCity, arrivalAirport, departingAirport, date } =
     summary
-  const { submitUserMessage } = useActions()
-  const [_, setMessages] = useUIState()
 
   const flights = [
     {
@@ -83,15 +79,6 @@ export const ListFlights = ({
             <div
               key={flight.id}
               className="flex cursor-pointer flex-row items-start sm:items-center gap-4 rounded-xl p-2 hover:bg-zinc-50"
-              onClick={async () => {
-                const response = await submitUserMessage(
-                  `The user has selected flight ${flight.airlines}, departing at ${flight.departureTime} and arriving at ${flight.arrivalTime} for $${flight.price}. Now proceeding to select seats.`
-                )
-                setMessages((currentMessages: any[]) => [
-                  ...currentMessages,
-                  response
-                ])
-              }}
             >
               <div className="w-10 sm:w-12 shrink-0 aspect-square rounded-lg bg-zinc-50 overflow-hidden">
                 <img

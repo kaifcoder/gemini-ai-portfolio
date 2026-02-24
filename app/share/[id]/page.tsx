@@ -1,11 +1,11 @@
 import { type Metadata } from 'next'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
 import { formatDate } from '@/lib/utils'
 import { getSharedChat } from '@/app/actions'
 import { ChatList } from '@/components/chat-list'
 import { FooterText } from '@/components/footer'
-import { AI, UIState, getUIStateFromAIState } from '@/lib/chat/actions'
+import type { UIMessage as Message } from 'ai'
 
 export const runtime = 'edge'
 export const preferredRegion = 'home'
@@ -33,7 +33,26 @@ export default async function SharePage({ params }: SharePageProps) {
     notFound()
   }
 
-  const uiState: UIState = getUIStateFromAIState(chat)
+  // Convert chat messages to Message format for ChatList
+  const messages: Message[] = chat.messages
+    .filter((message: any) => message.role !== 'system')
+    .map((message: any, index: number) => {
+      const parts: Message['parts'] = []
+      
+      // Add text content as text part
+      if (message.content) {
+        parts.push({ type: 'text' as const, text: message.content })
+      }
+      
+      // Note: Tool parts from stored messages may not have the full UI structure
+      // For shared pages, we mainly show text content
+
+      return {
+        id: `${chat.id}-${index}`,
+        role: message.role as 'user' | 'assistant',
+        parts
+      }
+    })
 
   return (
     <>
@@ -48,9 +67,7 @@ export default async function SharePage({ params }: SharePageProps) {
             </div>
           </div>
         </div>
-        <AI>
-          <ChatList messages={uiState} isShared={true} />
-        </AI>
+        <ChatList messages={messages} isShared={true} />
       </div>
       <FooterText className="py-8" />
     </>

@@ -6,10 +6,7 @@ import { PromptForm } from '@/components/prompt-form'
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
 import { IconShare } from '@/components/ui/icons'
 import { ChatShareDialog } from '@/components/chat-share-dialog'
-import { useAIState, useActions, useUIState } from 'ai/rsc'
-import type { AI } from '@/lib/chat/actions'
-import { nanoid } from 'nanoid'
-import { UserMessage } from './stocks/message'
+import type { UIMessage as Message } from 'ai'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -20,6 +17,9 @@ export interface ChatPanelProps {
   setInput: (value: string) => void
   isAtBottom: boolean
   scrollToBottom: () => void
+  messages: Message[]
+  sendMessage: (message: { text: string }) => void
+  isLoading: boolean
 }
 
 export function ChatPanel({
@@ -28,11 +28,11 @@ export function ChatPanel({
   input,
   setInput,
   isAtBottom,
-  scrollToBottom
+  scrollToBottom,
+  messages,
+  sendMessage,
+  isLoading
 }: ChatPanelProps) {
-  const [aiState] = useAIState()
-  const [messages, setMessages] = useUIState<typeof AI>()
-  const { submitUserMessage } = useActions()
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false)
 
   const exampleMessages = [
@@ -59,7 +59,7 @@ export function ChatPanel({
   ]
 
   return (
-    <div className="fixed inset-x-0 bg-white/70 bottom-0 w-full duration-300 ease-in-out peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] dark:from-10%">
+    <div className="fixed inset-x-0 bg-white/70 bottom-0 w-full duration-300 ease-in-out peer-data-[state=open]:group-[]:lg:pl-62.5 peer-data-[state=open]:group-[]:xl:pl-75 dark:from-10%">
       <ButtonScrollToBottom
         isAtBottom={isAtBottom}
         scrollToBottom={scrollToBottom}
@@ -76,23 +76,8 @@ export function ChatPanel({
                   index > 1 && 'hidden md:block'
                 )}
                 onClick={async () => {
-                  setMessages(currentMessages => [
-                    ...currentMessages,
-                    {
-                      id: nanoid(),
-                      display: <UserMessage>{example.message}</UserMessage>
-                    }
-                  ])
-
                   try {
-                    const responseMessage = await submitUserMessage(
-                      example.message
-                    )
-
-                    setMessages(currentMessages => [
-                      ...currentMessages,
-                      responseMessage
-                    ])
+                    sendMessage({ text: example.message })
                   } catch {
                     toast(
                       <div className="text-red-600">
@@ -131,7 +116,7 @@ export function ChatPanel({
                     chat={{
                       id,
                       title,
-                      messages: aiState.messages
+                      messages
                     }}
                   />
                 </>
@@ -141,7 +126,7 @@ export function ChatPanel({
         ) : null}
 
         <div className="grid gap-4 sm:pb-4">
-          <PromptForm input={input} setInput={setInput} />
+          <PromptForm input={input} setInput={setInput} sendMessage={sendMessage} isLoading={isLoading} />
         </div>
       </div>
     </div>

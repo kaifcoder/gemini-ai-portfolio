@@ -3,12 +3,13 @@
 import { ChatList } from '@/components/chat-list'
 import { ChatPanel } from '@/components/chat-panel'
 import { EmptyScreen } from '@/components/empty-screen'
-import { Message } from '@/lib/chat/actions'
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
 import { Session } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { useAIState, useUIState } from 'ai/rsc'
+import { useChat } from '@ai-sdk/react'
+import type { UIMessage as Message } from 'ai'
+import { DefaultChatTransport } from 'ai'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -20,14 +21,24 @@ export interface ChatProps extends React.ComponentProps<'div'> {
   missingKeys: string[]
 }
 
-export function Chat({ id, className, session, missingKeys }: ChatProps) {
+export function Chat({ id, className, session, missingKeys, initialMessages }: ChatProps) {
   const router = useRouter()
   const path = usePathname()
-  const [input, setInput] = useState('')
-  const [messages] = useUIState()
-  const [aiState] = useAIState()
-
   const [_, setNewChatId] = useLocalStorage('newChatId', id)
+  const [input, setInput] = useState('')
+
+  const { messages, sendMessage, status } = useChat({
+    id,
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    messages: initialMessages,
+    onFinish: () => {
+      if (session?.user) {
+        router.refresh()
+      }
+    }
+  })
+
+  const isLoading = status === 'streaming' || status === 'submitted'
 
   useEffect(() => {
     if (session?.user) {
@@ -36,13 +47,6 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
       }
     }
   }, [id, path, session?.user, messages])
-
-  useEffect(() => {
-    const messagesLength = aiState.messages?.length
-    if (messagesLength === 2) {
-      router.refresh()
-    }
-  }, [aiState.messages, router])
 
   useEffect(() => {
     setNewChatId(id)
@@ -59,10 +63,10 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
 
   return (
     <div
-      className="group  w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[200px] peer-[[data-state=open]]:xl:pl-[250px]"
+      className="group w-full overflow-auto pl-0 peer-data-[state=open]:lg:pl-50 peer-data-[state=open]:xl:pl-62.5"
       ref={scrollRef}
     >
-      <div className={cn('pb-[150px] pt-4', className)} ref={messagesRef}>
+      <div className={cn('pb-37.5 pt-4', className)} ref={messagesRef}>
         {messages.length ? (
           <ChatList messages={messages} isShared={false} session={session} />
         ) : (
@@ -76,6 +80,9 @@ export function Chat({ id, className, session, missingKeys }: ChatProps) {
         setInput={setInput}
         isAtBottom={isAtBottom}
         scrollToBottom={scrollToBottom}
+        messages={messages}
+        sendMessage={sendMessage}
+        isLoading={isLoading}
       />
     </div>
   )

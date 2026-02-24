@@ -6,11 +6,10 @@
 'use client'
 import { Card, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { useActions, useUIState } from 'ai/rsc'
 import { DownloadIcon } from '@radix-ui/react-icons'
 
 interface DownloadResumeCardProps {
-  summary: {
+  summary?: {
     link: string
   }
 }
