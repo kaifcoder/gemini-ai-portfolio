@@ -63,10 +63,10 @@ export function Chat({ id, className, session, missingKeys, initialMessages }: C
 
   return (
     <div
-      className="group w-full overflow-auto pl-0 peer-data-[state=open]:lg:pl-50 peer-data-[state=open]:xl:pl-62.5"
+      className="group w-full overflow-y-auto overflow-x-hidden scroll-smooth pl-0 peer-data-[state=open]:lg:pl-50 peer-data-[state=open]:xl:pl-62.5"
       ref={scrollRef}
     >
-      <div className={cn('pb-37.5 pt-4', className)} ref={messagesRef}>
+      <div className={cn('pb-37.5 pt-4 min-h-full', className)} ref={messagesRef}>
         {messages.length ? (
           <ChatList messages={messages} isShared={false} session={session} />
         ) : (

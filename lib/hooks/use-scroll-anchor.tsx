@@ -9,24 +9,13 @@ export const useScrollAnchor = () => {
   const [isVisible, setIsVisible] = useState(false)
 
   const scrollToBottom = useCallback(() => {
-    if (messagesRef.current) {
-      messagesRef.current.scrollIntoView({
-        block: 'end',
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
         behavior: 'smooth'
       })
     }
   }, [])
-
-  useEffect(() => {
-    if (messagesRef.current) {
-      if (isAtBottom && !isVisible) {
-        messagesRef.current.scrollIntoView({
-          block: 'end',
-          behavior: 'smooth'
-        })
-      }
-    }
-  }, [isAtBottom, isVisible])
 
   useEffect(() => {
     const { current } = scrollRef
@@ -74,7 +63,7 @@ export const useScrollAnchor = () => {
         observer.disconnect()
       }
     }
-  })
+  }, [])
 
   return {
     messagesRef,

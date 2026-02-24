@@ -10,6 +10,7 @@ import { SidebarMobile } from './sidebar-mobile'
 import { SidebarToggle } from './sidebar-toggle'
 import { ChatHistory } from './chat-history'
 import { Session } from '@/lib/types'
+import { ThemeToggle } from './theme-toggle'
 
 async function UserOrLogin() {
   const session = (await auth()) as Session
@@ -28,7 +29,7 @@ async function UserOrLogin() {
         </Link>
       )}
       <div className="flex items-center">
-        <IconSeparator className="size-6 text-zinc-200" />
+        <IconSeparator className="size-6 text-zinc-300 dark:text-zinc-700" />
         {session?.user ? (
           <UserMenu user={session.user} />
         ) : (
@@ -50,6 +51,7 @@ export function Header() {
         </React.Suspense>
       </div>
       <div className="flex items-center justify-end gap-2">
+        <ThemeToggle />
         <Button asChild size="sm" variant="ghost">
           <a
             target="_blank"

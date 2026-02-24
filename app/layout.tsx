@@ -33,6 +33,22 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (!theme) theme = 'light';
+                  document.documentElement.classList.remove('light', 'dark');
+                  document.documentElement.classList.add(theme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={cn(
           'font-sans antialiased',
@@ -41,7 +57,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <Toaster position="top-center" />
-        <Providers attribute="class" disableTransitionOnChange>
+        <Providers>
           <div className="flex flex-col min-h-screen">
             <Header />
             <main className="flex flex-col flex-1">{children}</main>

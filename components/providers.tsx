@@ -9,8 +9,17 @@ type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
-    <SidebarProvider>
-      <TooltipProvider>{children}</TooltipProvider>
-    </SidebarProvider>
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      storageKey="theme"
+      disableTransitionOnChange
+      {...props}
+    >
+      <SidebarProvider>
+        <TooltipProvider>{children}</TooltipProvider>
+      </SidebarProvider>
+    </NextThemesProvider>
   )
 }

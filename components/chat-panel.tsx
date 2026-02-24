@@ -59,7 +59,7 @@ export function ChatPanel({
   ]
 
   return (
-    <div className="fixed inset-x-0 bg-white/70 bottom-0 w-full duration-300 ease-in-out peer-data-[state=open]:group-[]:lg:pl-62.5 peer-data-[state=open]:group-[]:xl:pl-75 dark:from-10%">
+    <div className="fixed inset-x-0 bg-zinc-50/95 dark:bg-zinc-950/70 backdrop-blur-sm bottom-0 w-full duration-300 ease-in-out peer-data-[state=open]:group-[]:lg:pl-62.5 peer-data-[state=open]:group-[]:xl:pl-75">
       <ButtonScrollToBottom
         isAtBottom={isAtBottom}
         scrollToBottom={scrollToBottom}
@@ -72,7 +72,7 @@ export function ChatPanel({
               <div
                 key={example.heading}
                 className={cn(
-                  'cursor-pointer bg-zinc-50 text-zinc-950 rounded-2xl p-4 sm:p-6 hover:bg-zinc-100 transition-colors',
+                  'cursor-pointer bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-950 dark:text-zinc-50 rounded-2xl p-4 sm:p-6 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors shadow-sm hover:shadow-md',
                   index > 1 && 'hidden md:block'
                 )}
                 onClick={async () => {
@@ -88,8 +88,8 @@ export function ChatPanel({
                   }
                 }}
               >
-                <div className="font-medium">{example.heading}</div>
-                <div className="text-sm text-zinc-800">
+                <div className="font-medium text-zinc-900 dark:text-zinc-100">{example.heading}</div>
+                <div className="text-sm text-zinc-600 dark:text-zinc-400">
                   {example.subheading}
                 </div>
               </div>

@@ -68,13 +68,13 @@ export function PromptForm({
         }
       }}
     >
-      <div className="relative flex max-h-50 w-full grow flex-col overflow-hidden bg-zinc-200 px-12 sm:rounded-full sm:px-12">
+      <div className="relative flex max-h-50 w-full grow flex-col overflow-hidden bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 px-12 sm:rounded-full sm:px-12 shadow-sm">
         <Textarea
           ref={inputRef}
           tabIndex={0}
           onKeyDown={onKeyDown}
           placeholder="Send a message."
-          className="min-h-15 max-h-16 w-full bg-transparent placeholder:text-zinc-900 resize-none px-4 py-5 focus-within:outline-none sm:text-sm"
+          className="min-h-15 max-h-16 w-full bg-transparent placeholder:text-zinc-400 dark:placeholder:text-zinc-500 text-zinc-900 dark:text-zinc-100 resize-none px-4 py-5 focus-within:outline-none sm:text-sm"
           autoFocus
           spellCheck={false}
           autoComplete="off"
@@ -91,7 +91,7 @@ export function PromptForm({
                 type="submit"
                 size="icon"
                 disabled={input === '' || isLoading}
-                className="bg-transparent shadow-none text-zinc-950 rounded-full hover:bg-zinc-200"
+                className="bg-transparent shadow-none text-zinc-700 dark:text-zinc-300 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700"
               >
                 <IconArrowElbow />
                 <span className="sr-only">Send message</span>

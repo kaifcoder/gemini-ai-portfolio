@@ -4,12 +4,12 @@ import { LinkPreview } from './ui/link-preview'
 export function EmptyScreen() {
   return (
     <div className="mx-auto max-w-3xl px-4">
-      <div className="flex flex-col gap-2 rounded-2xl bg-zinc-50 sm:p-8 p-4 text-sm sm:text-base">
-        <h1 className="text-2xl sm:text-3xl tracking-tight font-semibold max-w-fit inline-block">
+      <div className="flex flex-col gap-2 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 sm:p-8 p-4 text-sm sm:text-base shadow-lg">
+        <h1 className="text-2xl sm:text-3xl tracking-tight font-semibold max-w-fit inline-block text-zinc-900 dark:text-zinc-100">
           {/* Generative ui portfolio */}
           AI Portfolio of Mohd Kaif
         </h1>
-        <p className="leading-normal text-zinc-900">
+        <div className="leading-normal text-zinc-700 dark:text-zinc-300">
           {/* describe this portfolio to users */}
           This is a unique Portfolio of Mohd Kaif In which user can interact
           with the AI chatbot and can see the projects and blogs. This is Made
@@ -28,11 +28,11 @@ export function EmptyScreen() {
             Google Gemini
           </LinkPreview>
           ,{' '}
-          <LinkPreview url="https://www.vercel.com/next" className="font-bold">
+          <LinkPreview url="https://www.vercel.com/next" className="font-bold text-zinc-900 dark:text-zinc-100">
             Next.JS
           </LinkPreview>{' '}
           and Vercel AI SDK. Enjoy! 🚀
-        </p>
+        </div>
       </div>
     </div>
   )
