@@ -7,9 +7,6 @@ import { ChatList } from '@/components/chat-list'
 import { FooterText } from '@/components/footer'
 import type { UIMessage as Message } from 'ai'
 
-export const runtime = 'edge'
-export const preferredRegion = 'home'
-
 interface SharePageProps {
   params: {
     id: string
